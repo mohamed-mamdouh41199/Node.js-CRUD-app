@@ -15,7 +15,7 @@ const validation_schema =  [
     body("price")
         .isNumeric()
         .withMessage('Price must be numeric value')
-        .isLength({min: 2, max:5} , `the price Should be less than 5 and more than 2`),
+        .isLength({min: 2, max:5} , `the price length Should be less than 5 and more than 2`),
 ]
 module.exports = 
 {

@@ -5,10 +5,18 @@ const {validationResult} = require('express-validator');
 const dataBase = require("../models/product_model");
 
 const get_all_products = async (req, res) => {
+    const querying = req.query
+    
+    console.log(querying)
+
+    const LIMIT = querying.limit;
+    const PAGE = querying.page;
+    const SKIP = (PAGE - 1) * LIMIT;
+
     try 
     {
         // Use the Mongoose model to find all products in the database
-        const products = await dataBase.find();
+        const products = await dataBase.find({},{"__v" : false}).limit(LIMIT).skip(SKIP);
 
         // Send products as response
         res.json(products);
@@ -22,7 +30,7 @@ const get_all_products = async (req, res) => {
 const get_single_product =  async (req, res) => {
     
     const product_id = req.params.id
-    const product = await dataBase.findById(product_id)
+    const product = await dataBase.findById(product_id , {"__v":false})
     if(!product)
     {
         return res.status(404).send({message : "The product with the given ID was not found."})

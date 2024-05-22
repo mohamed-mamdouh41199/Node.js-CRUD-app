@@ -1,0 +1,24 @@
+const new_product = {    
+    ...req.body
+}
+
+// Check for any errors on the request fields
+const errors = validationResult(req);
+if (!errors.isEmpty()) {
+    // If there are errors, send a bad request status and JSON of errors
+    return res.status(400).json({ errors: errors.array() });
+} else {
+    // Otherwise, save the new product to the database
+    try {
+        const product = await dataBase.create(new_product);
+        // Send a success response with the created product
+        res.status(201).json(product);
+    } catch(err) {
+        // If there is an error while trying to create the new product, send an appropriate error response
+        console.error("Error creating product:", err);
+        return res.status(500).json({ error: "Failed to create product" });
+    }
+}
+
+
+// this is new product in another way 
